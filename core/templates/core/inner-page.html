@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Profile</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    {% comment %}
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"> {% endcomment %}
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href={% static 'assets/vendor/aos/aos.css' %} rel="stylesheet">
+    <link href={% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %} rel="stylesheet">
+    <link href={% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %} rel="stylesheet">
+    <link href={% static 'assets/vendor/boxicons/css/boxicons.min.css' %} rel="stylesheet">
+    <link href={% static 'assets/vendor/glightbox/css/glightbox.min.css' %} rel="stylesheet">
+    <link href={% static 'assets/vendor/remixicon/remixicon.css' %} rel="stylesheet">
+    <link href={% static 'assets/vendor/swiper/swiper-bundle.min.css' %} rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href={% static 'assets/css/style.css' %} rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center ">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <div class="logo">
+                <h1><a href="index.html"><span>Electrons</span></a></h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto " href={% url 'index' %} class='active'>Home</a></li>
+                    <li><a class="nav-link scrollto " href={% url 'assignment' %}>Assignments</a></li>
+                    <li><a class="nav-link scrollto " href={% url 'material' %}>Material</a></li>
+                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                    <li><a class="nav-link scrollto" href={% url 'logout' %} style="color: yellow;">logout</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+            <!-- .navbar -->
+
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <main id="main">
+        {% if request.user.is_authenticated %}
+        <!-- ======= Breadcrumbs Section ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Profile : {{user.profile.name}}</h2>
+                    <ol>
+                        <li><a href={% url 'index' %}>Home</a></li>
+                        <li>Profile </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="row" style="margin: 20px;">
+                <div class="col-lg-3 col-md-4">
+                    <div class="text-center card-box">
+                        <div class="member-card">
+                            <div class="thumb-xl member-thumb m-b-10 center-block">
+                                <img src="{{user.profile.photo.url}}" style="width: 115px; height:115px" class="img-circle img-thumbnail" alt="profile-image">
+                            </div>
+
+                            <div class="">
+                                <h5 class="m-b-5">{{user.profile.name}}</h5>
+                            </div>
+                            <!-- 
+                            <button type="button" class="btn btn-success btn-sm w-sm waves-effect m-t-10 waves-light">Follow</button>
+                            <button type="button" class="btn btn-danger btn-sm w-sm waves-effect m-t-10 waves-light">Message</button> -->
+
+                            <div class="text-left m-t-40">
+                                <!-- <p class="text-muted font-13"><strong>Full Name :</strong> <span class="m-l-15">Johnathan Deo</span></p> -->
+                                <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">{{user.profile.Email_user}}</span></p>
+                                <p class="text-muted font-13"><strong>School :</strong><span class="m-l-15">{{user.profile.school}}</span></p>
+                                <p class="text-muted font-13"><strong>Level :</strong> <span class="m-l-15">{{user.profile.level}}</span></p>
+                                <p class="text-muted font-13"><strong>Rate :</strong> <span class="m-l-15">{{user.profile.rate}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row" style="margin: 20px;">
+                <h5 id='Your Schedule'>Your Schedule</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Number of Session</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for all_schedule in all_schedule%}
+                        <tr>
+                            <td>{{all_schedule.name_day}}</td>
+                            <td>{{all_schedule.day}}</td>
+                            <td>{{all_schedule.session_num}}</td>
+                            <td>{{all_schedule.notes}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" style="margin: 20px;">
+                <div class="d-flex justify-content-between align-items-center">
+                    {% for all_final in all_final %}
+                    <h4>Your final Assessment : {{ all_final.final }} </h4>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <p>
+        <a herf={% url 'profile' %}></a>
+    </p>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-info">
+                            <h3>Electrons</h3>
+                            <p class="pb-3"><em>Qui repudiandae et eum dolores alias sed ea. Qui suscipit veniam excepturi quod.</em></p>
+                            <p>
+                                A108 Adam Street <br> NY 535022, USA<br><br>
+                                <strong>Phone:</strong> +1 5589 55488 55<br>
+                                <strong>Email:</strong> info@example.com<br>
+                            </p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Electrons</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+
+                Designed and Developed by <a href="#">Yara mohamed ,IT section, HackerRank campus club, FCDS</a>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src={% static 'assets/vendor/aos/aos.js' %}></script>
+    <script src={% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}></script>
+    <script src={% static 'assets/vendor/glightbox/js/glightbox.min.js' %}></script>
+    <script src={% static 'assets/vendor/php-email-form/validate.js' %}></script>
+    <script src={% static 'assets/vendor/purecounter/purecounter.js' %}></script>
+    <script src={% static 'assets/vendor/swiper/swiper-bundle.min.js' %}></script>
+
+    <!-- Template Main JS File -->
+    <script src={% static 'assets/js/main.js' %}></script>
+
+</body>
+
+</html>
